@@ -1,0 +1,9 @@
+[package]
+name = "mandelbrot-orbits-rust"
+version = "0.1.0"
+authors = ["Jose Celano <josecelano@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+num = "0.4"
+image = "0.13.0"

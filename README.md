@@ -32,6 +32,12 @@ Execute MegaLinter locally:
 ./bin/ml.sh
 ```
 
+Run only  a single test:
+
+```s
+cargo test test_lambda
+```
+
 ## Credits
 
 - [Jeremy Rifkin](https://github.com/jeremy-rifkin) pointed me at the solution. I have copied/pasted part of his code to detect the period.
@@ -44,4 +50,4 @@ Execute MegaLinter locally:
 - [An Introduction to Complex Dynamics and the Mandelbrot Set by professor Robert L. Benedetto](https://rlbenedetto.people.amherst.edu/talks/mhc_ug14.pdf).
 - [Initial code to plot the Mandelbrot Set was forked from the O'Reilly Programming Rust book](https://github.com/ProgrammingRust/mandelbrot/tree/single-threaded).
 - [Programming Rust Book, O'Reilly](https://www.oreilly.com/library/view/programming-rust-2nd/9781492052586/).
-
+- [Periodic points in the Mandelbrot set](https://www.ibiblio.org/e-notes/MSet/cperiod.htm).

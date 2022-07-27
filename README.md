@@ -1,6 +1,6 @@
 # Mandelbrot Orbits
 
-[![MegaLinter](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml)
+[![Test](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/test.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/test.yml) [![MegaLinter](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml)
 
 This is a small project to learn Rust.
 
@@ -29,7 +29,7 @@ cargo run ./output/mandelbrot_2000x2000.png 2000x2000 -2.0,2.00 2.0,-2.0
 Execute MegaLinter locally:
 
 ```s
-npx mega-linter-runner --image=oxsecurity/megalinter-rust:v6
+npx mega-linter-runner --image=oxsecurity/megalinter-rust:v6 --fix
 ```
 
 ## Credits

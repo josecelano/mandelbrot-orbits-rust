@@ -29,7 +29,7 @@ cargo run ./output/mandelbrot_2000x2000.png 2000x2000 -2.0,2.00 2.0,-2.0
 Execute MegaLinter locally:
 
 ```s
-npx mega-linter-runner --image=oxsecurity/megalinter-rust:v6 --fix
+./bin/ml.sh
 ```
 
 ## Credits

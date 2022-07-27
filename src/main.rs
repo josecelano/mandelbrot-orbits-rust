@@ -158,7 +158,16 @@ fn print_usage(app_name: &String) {
     eprintln!("Usage: {} FILE PIXELS UPPERLEFT LOWERRIGHT", app_name.green());
     eprintln!("Example: {} mandel.png 1000x750 -1.20,0.35 -1,0.20", app_name.green());
 }
-fn main() {
+
+#[derive(Debug)]
+struct Arguments {
+    filepath: String,
+    bounds: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+}
+
+fn parse_args() -> Arguments {
     let args: Vec<String> = env::args().collect();
 
     if args.len() - 1 != 4 {
@@ -167,17 +176,24 @@ fn main() {
         std::process::exit(1);
     }
 
-    let bounds = parse_pair(&args[2], 'x')
-        .expect("error parsing image dimensions");
-    let upper_left = parse_complex(&args[3])
-        .expect("error parsing upper left corner point");
-    let lower_right = parse_complex(&args[4])
-        .expect("error parsing lower right corner point");
+    Arguments {
+        filepath: args[1].clone(),
+        bounds: parse_pair(&args[2], 'x')
+        .expect("error parsing image dimensions"),
+        upper_left: parse_complex(&args[3])
+        .expect("error parsing upper left corner point"),
+        lower_right: parse_complex(&args[4])
+        .expect("error parsing lower right corner point"),
+    }
+}
 
-    let mut pixels = vec![0; bounds.0 * bounds.1];
+fn main() {
+    let args = parse_args();
 
-    render(&mut pixels, bounds, upper_left, lower_right);
+    let mut pixels = vec![0; args.bounds.0 * args.bounds.1];
 
-    write_image(&args[1], &pixels, bounds)
+    render(&mut pixels, args.bounds, args.upper_left, args.lower_right);
+
+    write_image(&args.filepath, &pixels, args.bounds)
         .expect("error writing PNG file");
 }

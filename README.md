@@ -1,6 +1,6 @@
 # Mandelbrot Orbits
 
-[![MegaLinter](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml)
+[![Test](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/test.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/test.yml) [![MegaLinter](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml)
 
 This is a small project to learn Rust.
 

@@ -161,8 +161,9 @@ fn print_usage(app_name: &String) {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() != 5 {
+    if args.len() - 1 != 4 {
         print_usage(&args[0]);
+        eprintln!("{} wrong number of arguments: expected 4, got {}", "Error:".red().bold(), args.len() - 1);
         std::process::exit(1);
     }
 

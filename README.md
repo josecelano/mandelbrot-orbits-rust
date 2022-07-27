@@ -1,5 +1,7 @@
 # Mandelbrot Orbits
 
+[![MegaLinter](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/josecelano/mandelbrot-orbits-rust/actions/workflows/mega-linter.yml)
+
 This is a small project to learn Rust.
 
 It generates an image of the Mandelbrot Set where each pixel color represents the period of the complex point if the point belongs to the Set.

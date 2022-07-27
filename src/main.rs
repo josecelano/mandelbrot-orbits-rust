@@ -152,15 +152,17 @@ fn write_image(filename: &str, pixels: &[u8], bounds: (usize, usize))
 }
 
 use std::env;
+use text_colorizer::*;
 
+fn print_usage(app_name: &String) {
+    eprintln!("Usage: {} FILE PIXELS UPPERLEFT LOWERRIGHT", app_name.green());
+    eprintln!("Example: {} mandel.png 1000x750 -1.20,0.35 -1,0.20", app_name.green());
+}
 fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 5 {
-        eprintln!("Usage: {} FILE PIXELS UPPERLEFT LOWERRIGHT",
-                  args[0]);
-        eprintln!("Example: {} mandel.png 1000x750 -1.20,0.35 -1,0.20",
-                  args[0]);
+        print_usage(&args[0]);
         std::process::exit(1);
     }
 

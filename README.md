@@ -24,6 +24,14 @@ git clone git@github.com:josecelano/mandelbrot-orbits-rust.git
 cargo run ./output/mandelbrot_2000x2000.png 2000x2000 -2.0,2.00 2.0,-2.0
 ```
 
+## Development
+
+Execute MegaLinter locally:
+
+```s
+npx mega-linter-runner --image=oxsecurity/megalinter-javascript:v6 --flavor=rust
+```
+
 ## Credits
 
 - [Jeremy Rifkin](https://github.com/jeremy-rifkin) pointed me at the solution. I have copied/pasted part of his code to detect the period.

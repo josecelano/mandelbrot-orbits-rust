@@ -302,16 +302,6 @@ std::complex<fp> lambda(const int n, const std::complex<fp> z, const std::comple
 /// λ multiplier function of a point "c"
 fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
 
-    if n == 1 {
-        //  2z
-        return Complex { re: 2.0, im: 0. } * c;
-    }
-
-    if n == 2 {
-        //  4(c + 1) 
-        return Complex { re: 4.0, im: 0. } * (c + 1.);
-    }
-
     let mut result = phi_prime(c);
 
     // DEBUG

@@ -15,6 +15,7 @@
     "Blandy",
     "Celano",
     "clippy",
+    "Infima",
     "josecelano",
     "LOWERRIGHT",
     "mandel",
@@ -24,7 +25,8 @@
     "Rifkin",
     "rustc",
     "rustfmt",
-    "UPPERLEFT"
+    "UPPERLEFT",
+    "zstd"
   ],
   "version": "0.2"
 }

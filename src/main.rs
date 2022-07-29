@@ -131,15 +131,15 @@ fn render(pixels: &mut [u8],
                         let period = calculate_period(z0, point);
 
                         let color = match period {
-                            0 => 200, // Belong to Mandelbrot Set but we cannot calculate the period
-                            1 => 0,
-                            2 => 25,
-                            3 => 50,
-                            4 => 75,
-                            5 => 100,
-                            6 => 125,
-                            7 => 150,
-                            _ => 175,
+                            0 => 210, // Belong to Mandelbrot Set but we cannot calculate the period
+                            1 => 0,   // Black
+                            2 => 100,
+                            3 => 150,
+                            4 => 160,
+                            5 => 170,
+                            6 => 180,
+                            7 => 190,
+                            _ => 200,
                         };
 
                         color

@@ -302,7 +302,7 @@ std::complex<fp> lambda(const int n, const std::complex<fp> z, const std::comple
 /// λ multiplier function of a point "c"
 fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
 
-    let mut result = phi_prime(c);
+    let mut result = phi_prime(z);
 
     // DEBUG
     // print!("{ } phi_prime for z ({:?},{:?}): {:?}\n", n, z.re(), z.im(), result);
@@ -439,8 +439,10 @@ fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
     let max_period = 40;
     let mut period = 0;
 
+    let zn = phi_n(z, c, 1000);
+
     for p in 1..max_period {
-        if is_period_p(z, c, p) {
+        if is_period_p(zn, c, p) {
             period = p;
             break;
         }

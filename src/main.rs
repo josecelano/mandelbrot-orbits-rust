@@ -357,7 +357,7 @@ fn test_lambda() {
     // For n = 1
     let n1: usize = 1;
     let result1 = lambda(z, c, n1);
-    let expected_result1 = Complex { re: 2.0, im: 2.0 };
+    let expected_result1 = Complex { re: 0.0, im: 0.0 };
     assert_eq!(result1, expected_result1, "expected λ(z,c,n) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}", expected_result1, z, c, n1, result1);
 
 }
@@ -439,7 +439,7 @@ fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
     let max_period = 40;
     let mut period = 0;
 
-    let zn = phi_n(z, c, 1000);
+    let zn = phi_n(z, c, 10000);
 
     for p in 1..max_period {
         if is_period_p(zn, c, p) {

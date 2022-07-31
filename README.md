@@ -55,6 +55,7 @@ cargo test test_lambda
 - [Mandelbrot orbits explorer](https://mandelbrot-set-periods.online/).
 - [Mandelbrot trajectories explorer](https://rifkin.dev/projects/mandelbrot-trajectories/).
 - [Mandelbrot in C language with arbitrary precision](https://github.com/josecelano/c-mandelbrot-arbitrary-precision).
+- [Orbit detection for the Mandelbrot set by Mark McClure](https://observablehq.com/@mcmcclur/orbit-detection-for-the-mandelbrot-set).
 
 ## Books
 

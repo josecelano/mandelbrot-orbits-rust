@@ -340,16 +340,20 @@ fn test_lambda() {
 
     */
 
-    /*
     let z0 = Complex { re: 0., im: 0. };
-    assert_eq!(lambda(z0, Complex { re: -2., im: 0. }, 1).abs(), 4.);
-    assert_eq!(lambda(z0, Complex { re: -1.54369, im: 0. }, 0).abs(), 1.67857);
+    let zn: Complex<f64>;
+    let c: Complex<f64>;
+
+    c = Complex { re: -2., im: 0. };
+    zn = phi_n(z0, c, 1000);
+    assert_eq!(lambda(zn, c, 1).abs(), 4.);
+
+    /*assert_eq!(lambda(z0, Complex { re: -1.54369, im: 0. }, 0).abs(), 1.67857);
     assert_eq!(lambda(z0, Complex { re: -0.22816, im: 1.11514 }, 1).abs(), 3.08738);
     assert_eq!(lambda(z0, Complex { re: -1.89291, im: 0. }, 1).abs(), 1.9277203709764796);
     assert_eq!(lambda(z0, Complex { re: -1.29636, im: 0.44185 }, 1).abs(), 3.5293950841929753);
     assert_eq!(lambda(z0, Complex { re: -0.10110, im: 0.95629 }, 1).abs(), 1.3283565532026762);
-    assert_eq!(lambda(z0, Complex { re: 0.34391, im: 0.70062 }, 1).abs(), 2.4580724661444995);
-    */
+    assert_eq!(lambda(z0, Complex { re: 0.34391, im: 0.70062 }, 1).abs(), 2.4580724661444995);*/
 
     let z = Complex { re: 0., im: 0. };
     let c = Complex { re: 1., im: 1. };

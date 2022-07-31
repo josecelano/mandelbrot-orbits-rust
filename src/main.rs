@@ -145,8 +145,8 @@ fn render(pixels: &mut [u8],
                         color
                     },
                     // Not a Mandelbrot Set point
-                    //Some(count) => 255 - count as u8 // With grayscale depending on the escape time
-                    Some(_count) => 255 // White if it's not in the Mandelbrot Set
+                    Some(count) => 255 - count as u8 // With grayscale depending on the escape time
+                    //Some(_count) => 255 // White if it's not in the Mandelbrot Set
                 };
         }
     }

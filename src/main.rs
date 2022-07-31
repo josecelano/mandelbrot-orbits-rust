@@ -443,7 +443,9 @@ fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
     let max_period = 40;
     let mut period = 0;
 
-    let zn = phi_n(z, c, 10000);
+    // Increase n to obtain a better value for period near the edge of the mandelbrot.
+    // 1000 is quite OK for a 2048x2048px image.
+    let zn = phi_n(z, c, 1000);
 
     for p in 1..max_period {
         if is_period_p(zn, c, p) {

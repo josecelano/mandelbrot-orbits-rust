@@ -2,6 +2,7 @@
 #![allow(elided_lifetimes_in_paths)]
 
 use num::Complex;
+use num::complex::ComplexFloat;
 
 /// Try to determine if `c` is in the Mandelbrot set, using at most `limit`
 /// iterations to decide.
@@ -120,10 +121,29 @@ fn render(pixels: &mut [u8],
         for column in 0..bounds.0 {
             let point = pixel_to_point(bounds, (column, row),
                                        upper_left, lower_right);
+
+            let iteration_limit = 255;
+
             pixels[row * bounds.0 + column] =
-                match escape_time(point, 255) {
-                    None => 0,
-                    Some(count) => 255 - count as u8
+                match escape_time(point, iteration_limit) {
+                    None => {
+                        // Mandelbrot Set point
+                        // Calculate period
+                        let z0 = Complex { re: 0.0, im: 0.0 };
+                        let period = calculate_period(z0, point);
+
+                        let color = match period {
+                            0 => 210, // Belong to Mandelbrot Set but we cannot calculate the period
+                            1 => 0,   // Period 1: black
+                            2 => 50,
+                            3 => 100,
+                            _ => 200,
+                        };
+
+                        color
+                    },
+                    // Not a Mandelbrot Set point. Grayscale depending on the escape time
+                    Some(count) => iteration_limit as u8 - count as u8,
                 };
         }
     }
@@ -185,6 +205,169 @@ fn parse_args() -> Arguments {
         lower_right: parse_complex(&args[4])
         .expect("error parsing lower right corner point"),
     }
+}
+
+/// The Mandelbrot Set base formula:
+/// φ(z) = z² + c = (z * z) + c
+fn phi(z: Complex<f64>, c: Complex<f64>) -> Complex<f64> {
+    (z * z) + c
+}
+
+#[test]
+fn test_phi() {
+    let z = Complex { re: 1., im: 1. };
+    let c = Complex { re: 1., im: 1. };
+    let result = phi(z, c);
+    let expected_result = (z * z) + c; // 1+3i
+    assert_eq!(result, expected_result, "expected φ(z) = z² + c = {:?} where z = {:?}, got {:?}", expected_result, z, result);
+}
+
+/// N recursive iterations of the base Mandelbrot formula:
+/// φn(z) = (((z² + c)²) + c)² + c where n = 3
+/// 
+/// n = 1; φ(z) = z² + c = z1
+/// n = 2; φ(z) = z1² + c = z2
+/// n = 3; φ(z) = z2² + c = z3
+/// n = 4; φ(z) = z3² + c = z4
+/// ...
+/// φ(z) = (zn-1)² + c = zn
+fn phi_n(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
+    let mut result = z.clone();
+    for _iter in 1..=n {
+        result = phi(result, c);
+    }
+    result
+}
+
+#[test]
+fn test_phi_n() {
+    let z = Complex { re: 1., im: 1. };
+    let c = Complex { re: 1., im: 1. };
+
+    // For n = 1, φ1(z) = z² + c = 1+3i
+    let n1: usize = 1;
+    let result1 = phi_n(z, c, n1);
+    let expected_result1 = (z * z) + c; // 1+3i
+    assert_eq!(result1, expected_result1, "expected φn(z) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}", expected_result1, z, c, n1, result1);
+
+    // For n = 2, φ2(z) = φ1(z)² + c = ???
+    let n2: usize = 2;
+    let result2 = phi_n(z, c, n2);
+    let expected_result2 = (result1 * result1) + c; // -7+7i
+    assert_eq!(result2, expected_result2, "expected φn(z) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}", expected_result2, z, c, n2, result2);    
+}
+
+/// The derivative of the Mandelbrot Set base formula: 
+/// φ'(z) = 2 * z
+fn phi_prime(z: Complex<f64>) -> Complex<f64> {
+    2. * z
+}
+
+#[test]
+fn test_phi_prime() {
+    let z = Complex { re: 1., im: 1. };
+    let result = phi_prime(z);
+    let expected_result = Complex { re: 2., im: 2. };
+    assert_eq!(result, expected_result, "expected φ'(z) = 2 * z = {:?} where z = {:?}, got {:?}", expected_result, z, result);
+}
+
+fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
+
+    let mut result = phi_prime(z);
+
+    for iter in 1..n {
+        result = result * phi_prime(phi_n(z, c, iter));
+    }
+
+    result
+}
+
+#[test]
+fn test_lambda() {
+    let z0 = Complex { re: 0., im: 0. };
+    let zn: Complex<f64>;
+    let c: Complex<f64>;
+
+    c = Complex { re: -2., im: 0. };
+    zn = phi_n(z0, c, 1000);
+    assert_eq!(lambda(zn, c, 1).abs(), 4.);
+
+    let z = Complex { re: 0., im: 0. };
+    let c = Complex { re: 1., im: 1. };
+
+    // For n = 1
+    let n1: usize = 1;
+    let result1 = lambda(z, c, n1);
+    let expected_result1 = Complex { re: 0.0, im: 0.0 };
+    assert_eq!(result1, expected_result1, "expected λ(z,c,n) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}", expected_result1, z, c, n1, result1);
+
+}
+
+/// It checks if point "c" has a period of "p".
+fn is_period_p(z: Complex<f64>,c: Complex<f64>, n: usize) -> bool {
+    let max_period = 40;
+
+    let mut result = z.clone();
+
+    for _iter in 0..max_period {
+
+        let lambda = lambda(result, c, n);
+        let lambda_abs = lambda.abs();
+
+        if lambda_abs >= 1. {
+            return false;
+        }
+
+        result = phi(result, c);
+    }
+
+    true
+}
+
+#[test]
+fn test_is_period() {
+
+    let z = Complex { re: 0., im: 0. };
+
+    // Point with period of 1
+    let c1 = Complex { re: 0., im: 0. };
+    assert_eq!(is_period_p(z, c1, 1), true, "expected period of point {:?} to be 1", c1);
+
+    // Another point with period of 1
+    let c2 = Complex { re: -0.1, im: 0.1 };
+    assert_eq!(is_period_p(z, c2, 1), true, "expected period of point {:?} to be 1", c2);
+}
+
+/// Period 0 means the point does not belong to the Mandelbrot Set.
+fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
+
+    let max_period = 40;
+    let mut period = 0;
+
+    // Increase n to obtain a better value for period near the edge of the mandelbrot.
+    // 1000 is quite OK for a 2048x2048px image.
+    let zn = phi_n(z, c, 1000);
+
+    for p in 1..max_period {
+        if is_period_p(zn, c, p) {
+            period = p;
+            break;
+        }
+    }
+
+    period
+}
+
+#[test]
+fn test_calculate_period() {
+    let z0 = Complex { re: 0., im: 0. };
+
+    // Outside
+    assert_eq!(calculate_period(z0, Complex { re: 0., im: 0. }), 1);
+
+    // Mandelbrot Set
+    assert_eq!(calculate_period(z0, Complex { re: 0., im: 0. }), 1);      // Period 1
+    assert_eq!(calculate_period(z0, Complex { re: -0.1, im: 0.1 }), 1);   // Period 1
 }
 
 fn main() {

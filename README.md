@@ -54,9 +54,6 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 ## Links
 
-- [Periodic points in the Mandelbrot set](https://www.ibiblio.org/e-notes/MSet/cperiod.htm).
-- [Orbit detection for the Mandelbrot set by Mark McClure](https://observablehq.com/@mcmcclur/orbit-detection-for-the-mandelbrot-set).
-
 ### Repositories
 
 - [Same thing in C++ by Jeremy Rifkin](https://github.com/jeremy-rifkin/mandelbrot-orbits).
@@ -80,9 +77,14 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 ### Wikibook
 
-[Fractals](https://en.wikibooks.org/wiki/Fractals).
+- [Fractals](https://en.wikibooks.org/wiki/Fractals).
 
 ### Demos
 
 - [Mandelbrot trajectories explorer](https://rifkin.dev/projects/mandelbrot-trajectories/).
 - [Mandelbrot orbits explorer](https://mandelbrot-set-periods.online/).
+
+### Other
+
+- [Periodic points in the Mandelbrot set](https://www.ibiblio.org/e-notes/MSet/cperiod.htm).
+- [Orbit detection for the Mandelbrot set by Mark McClure](https://observablehq.com/@mcmcclur/orbit-detection-for-the-mandelbrot-set).

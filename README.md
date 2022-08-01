@@ -14,8 +14,8 @@ For now, it's using a greyscale color scheme.
 
 ## Requirements
 
-- `cargo`: ^1.62.1.
-- `rustc`: ^1.62.1.
+- `cargo`: `^1.62.1`.
+- `rustc`: `^1.62.1`.
 
 ## Use
 
@@ -37,6 +37,14 @@ Run only  a single test:
 ```s
 cargo test test_lambda
 ```
+
+## Math
+
+You can find an explanation [here](https://github.com/jeremy-rifkin/mandelbrot-orbits).
+
+And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and write a more formal explanation of the math behind the algorithm.
+
+![./docs/images/math.png](./docs/images/math.png)
 
 ## Credits
 

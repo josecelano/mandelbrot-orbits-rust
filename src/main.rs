@@ -225,24 +225,15 @@ fn test_phi() {
     assert_eq!(result, expected_result, "expected φ(z) = z² + c = {:?} where z = {:?}, got {:?}", expected_result, z, result);
 }
 
-/*
-std::complex<fp> phi_n(int n, std::complex<fp> z, const std::complex<fp> c) {
-	while(n--) {
-		z = z * z + c;
-	}
-	return z;
-}
-*/
-
 /// N recursive iterations of the base Mandelbrot formula:
 /// φn(z) = (((z² + c)²) + c)² + c where n = 3
 /// 
-/// φ(z) = z² + c = z1
-/// φ(z) = z1² + c = z2
+/// n = 1; φ(z) = z² + c = z1
+/// n = 2; φ(z) = z1² + c = z2
+/// n = 3; φ(z) = z2² + c = z3
+/// n = 4; φ(z) = z3² + c = z4
 /// ...
-/// φ(zm) = zm² + c = zn
-/// 
-/// Where zm = n -1
+/// φ(z) = (zn-1)² + c = zn
 fn phi_n(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
     let mut result = z.clone();
     for _iter in 1..=n {
@@ -269,12 +260,6 @@ fn test_phi_n() {
     assert_eq!(result2, expected_result2, "expected φn(z) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}", expected_result2, z, c, n2, result2);    
 }
 
-/*
-std::complex<fp> phi_prime(const std::complex<fp> z, [[maybe_unused]] const std::complex<fp> c) {
-	return 2. * z;
-}
-*/
-
 /// The derivative of the Mandelbrot Set base formula: 
 /// φ'(z) = 2 * z
 fn phi_prime(z: Complex<f64>) -> Complex<f64> {
@@ -289,17 +274,6 @@ fn test_phi_prime() {
     assert_eq!(result, expected_result, "expected φ'(z) = 2 * z = {:?} where z = {:?}, got {:?}", expected_result, z, result);
 }
 
-/*
-std::complex<fp> lambda(const int n, const std::complex<fp> z, const std::complex<fp> c) {
-	std::complex<fp> lambda = phi_prime(z, c);
-	for(int i = 1; i < n; i++) {
-		lambda *= phi_prime(phi_n(i, z, c), c);
-	}
-	return lambda;
-}
-*/
-
-/// λ multiplier function of a point "c"
 fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
 
     let mut result = phi_prime(z);
@@ -313,28 +287,6 @@ fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
 
 #[test]
 fn test_lambda() {
-    /* 
-    
-    From: https://www.ibiblio.org/e-notes/MSet/cperiod.htm
-    
-    Here are some preperiodic points with period 1. 
-    All these points lie outside the main cardioid and the relevant fixed points are repelling.
-    A point is preperiodic with period n if its critical orbit becomes periodic with period n after k (a finite number) steps.
-    
-    -----------------------------------------------------
-    | num | k |	c	               | |λ|     | Arg(λ)o  |
-    -----------------------------------------------------
-    | 1	  | 2 |	-2	               | 4	     |  0       |
-    | 2	  | 3 |	-1.54369	       | 1.67857 |  180     |
-    | 3	  | 3 |	-0.22816+1.11514i  | 3.08738 | -23.126  |
-    | 4	  | 4 |	-1.89291	       | 1.92774 |  180     |
-    | 5	  | 4 |	-1.29636+0.44185i  | 3.52939 | -5.7209  |
-    | 6	  | 4 |	-0.10110+0.95629i  | 1.32833 |  119.553 |
-    | 7   | 4 |	 0.34391+0.70062i  | 2.45805 | -30.988  |
-    -----------------------------------------------------
-
-    */
-
     let z0 = Complex { re: 0., im: 0. };
     let zn: Complex<f64>;
     let c: Complex<f64>;
@@ -342,13 +294,6 @@ fn test_lambda() {
     c = Complex { re: -2., im: 0. };
     zn = phi_n(z0, c, 1000);
     assert_eq!(lambda(zn, c, 1).abs(), 4.);
-
-    /*assert_eq!(lambda(z0, Complex { re: -1.54369, im: 0. }, 0).abs(), 1.67857);
-    assert_eq!(lambda(z0, Complex { re: -0.22816, im: 1.11514 }, 1).abs(), 3.08738);
-    assert_eq!(lambda(z0, Complex { re: -1.89291, im: 0. }, 1).abs(), 1.9277203709764796);
-    assert_eq!(lambda(z0, Complex { re: -1.29636, im: 0.44185 }, 1).abs(), 3.5293950841929753);
-    assert_eq!(lambda(z0, Complex { re: -0.10110, im: 0.95629 }, 1).abs(), 1.3283565532026762);
-    assert_eq!(lambda(z0, Complex { re: 0.34391, im: 0.70062 }, 1).abs(), 2.4580724661444995);*/
 
     let z = Complex { re: 0., im: 0. };
     let c = Complex { re: 1., im: 1. };
@@ -361,22 +306,7 @@ fn test_lambda() {
 
 }
 
-/*
-bool is_period(const int n, std::complex<fp> z, const std::complex<fp> c) {
-	for(int i = 0; i < max_period; i++) {
-		if(std::abs(lambda(n, z, c)) >= 1) {
-			return false;
-		}
-		z = z * z + c;
-	}
-	return true;
-}
-*/
-
-/// It checks is point "c" has a period of "p".
-/// If |λ| < 1, the point is attracting.
-/// If |λ| > 1, the point is repelling.
-/// If |λ| = 1, the point is indifferent.
+/// It checks if point "c" has a period of "p".
 fn is_period_p(z: Complex<f64>,c: Complex<f64>, n: usize) -> bool {
     let max_period = 40;
 
@@ -409,22 +339,7 @@ fn test_is_period() {
     // Another point with period of 1
     let c2 = Complex { re: -0.1, im: 0.1 };
     assert_eq!(is_period_p(z, c2, 1), true, "expected period of point {:?} to be 1", c2);
-
-    // Point with period of 2
-    //let c3 = Complex { re: -1.0, im: 0. };
-    //assert_eq!(is_period_p(z, c3, 2), true, "expected period of point {:?} to be 2", c3);
 }
-
-/*
-	 * Assume we've converged on an attractive fixed point here
-	 * Plug it into multiplier equation and check ...?
-     for(int p = 1; p <= max_period; p++) {
-		if(is_period(p, z, c)) {
-			return {false, 0, p};
-		}
-	}
-	return {false, 0, 0};
-*/
 
 /// Period 0 means the point does not belong to the Mandelbrot Set.
 fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
@@ -456,8 +371,6 @@ fn test_calculate_period() {
     // Mandelbrot Set
     assert_eq!(calculate_period(z0, Complex { re: 0., im: 0. }), 1);      // Period 1
     assert_eq!(calculate_period(z0, Complex { re: -0.1, im: 0.1 }), 1);   // Period 1
-    //assert_eq!(calculate_period(z0, Complex { re: -1.0, im: 0. }), 2);    // Period 2
-    //assert_eq!(calculate_period(z0, Complex { re: -0.1, im: 0.7 }), 3);   // Period 3
 }
 
 fn main() {

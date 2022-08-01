@@ -304,15 +304,10 @@ fn lambda(z: Complex<f64>,c: Complex<f64>, n: usize) -> Complex<f64> {
 
     let mut result = phi_prime(z);
 
-    // DEBUG
-    // print!("{ } phi_prime for z ({:?},{:?}): {:?}\n", n, z.re(), z.im(), result);
-
     for iter in 1..n {
         result = result * phi_prime(phi_n(z, c, iter));
-        
-        // DEBUG
-        //print!("{ } lambda for c ({:?},{:?}): {:?}\n", iter, c.re(), c.im(), result);
     }
+
     result
 }
 
@@ -389,14 +384,8 @@ fn is_period_p(z: Complex<f64>,c: Complex<f64>, n: usize) -> bool {
 
     for _iter in 0..max_period {
 
-        // DEBUG
-        // print!("{ } calling lambda with (result, c, n) = ({:?}, {:?}, {:?})\n", iter, result, c , n);
-
         let lambda = lambda(result, c, n);
         let lambda_abs = lambda.abs();
-
-        // DEBUG
-        // print!("{ } lambda modulus for c ({:?},{:?}): {:?} where λ = {:?} \n", iter, c.re(), c.im(), lambda, lambda_abs);
 
         if lambda_abs >= 1. {
             return false;
@@ -452,13 +441,6 @@ fn calculate_period(z: Complex<f64>, c: Complex<f64>) -> usize {
             period = p;
             break;
         }
-    }
-
-    // DEBUG
-    // Force one pixel to be white to easily locate it on the image.
-    if c.re == -1.0 && c.im == 0.0 {
-        // DEBUG
-        print!("Period for point ({:?}, {:?}) is {}", c.re, c.im, period);
     }
 
     period

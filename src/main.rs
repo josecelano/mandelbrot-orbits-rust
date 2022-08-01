@@ -122,8 +122,10 @@ fn render(pixels: &mut [u8],
             let point = pixel_to_point(bounds, (column, row),
                                        upper_left, lower_right);
 
+            let iteration_limit = 255;
+
             pixels[row * bounds.0 + column] =
-                match escape_time(point, 255) {
+                match escape_time(point, iteration_limit) {
                     None => {
                         // Mandelbrot Set point
                         // Calculate period
@@ -132,21 +134,16 @@ fn render(pixels: &mut [u8],
 
                         let color = match period {
                             0 => 210, // Belong to Mandelbrot Set but we cannot calculate the period
-                            1 => 0,   // Black
-                            2 => 100,
-                            3 => 150,
-                            4 => 160,
-                            5 => 170,
-                            6 => 180,
-                            7 => 190,
+                            1 => 0,   // Period 1: black
+                            2 => 50,
+                            3 => 100,
                             _ => 200,
                         };
 
                         color
                     },
-                    // Not a Mandelbrot Set point
-                    Some(count) => 255 - count as u8 // With grayscale depending on the escape time
-                    //Some(_count) => 255 // White if it's not in the Mandelbrot Set
+                    // Not a Mandelbrot Set point. Grayscale depending on the escape time
+                    Some(count) => iteration_limit as u8 - count as u8,
                 };
         }
     }

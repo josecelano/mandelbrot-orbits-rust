@@ -8,9 +8,9 @@ It generates an image of the Mandelbrot Set where each pixel color represents th
 
 More info about [Mandelbrot Set Periods](https://github.com/josecelano/mandelbrot-explorer).
 
-> WIP: This is a work in progress. For now, it only generates a gray scale image like this:
+For now, it's using a greyscale color scheme.
 
-![./docs/images/mandelbrot_2000x2000.png](./docs/images/mandelbrot_2000x2000.png)
+![./docs/images/mandelbrot_2000x2000.png](./docs/images/mandelbrot_sample.png)
 
 ## Requirements
 
@@ -21,7 +21,7 @@ More info about [Mandelbrot Set Periods](https://github.com/josecelano/mandelbro
 
 ```s
 git clone git@github.com:josecelano/mandelbrot-orbits-rust.git
-cargo run ./output/mandelbrot_2000x2000.png 2000x2000 -2.0,2.00 2.0,-2.0
+cargo run ./output/mandelbrot_2048x2048.png 2048x2048 -2.0,2.00 2.0,-2.0
 ```
 
 ## Development

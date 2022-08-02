@@ -1,0 +1,41 @@
+---
+name: Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      pixels:
+        description: "Image size in pixels. For example: 1024x1024."
+        required: false
+        default: "2048x2048"
+      upperleft:
+        description: "Image size in pixels. For example: 1024x1024."
+        required: false
+        default: "-2.0,2.00"
+      lowerright:
+        description: "Image size in pixels. For example: 1024x1024."
+        required: false
+        default: "2.0,-2.0"
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+
+      - name: Execute the program
+        run: cargo run "./mandelbrot_${{ github.event.inputs.pixels }}.png" "${{ github.event.inputs.pixels }}" "${{ github.event.inputs.upperleft }}" "${{ github.event.inputs.lowerright }}"
+
+      - name: Upload resulting image
+        uses: actions/upload-artifact@v3
+        with:
+          name: "mandelbrot_${{ github.event.inputs.pixels }}.png"
+          path: "./mandelbrot_${{ github.event.inputs.pixels }}.png"

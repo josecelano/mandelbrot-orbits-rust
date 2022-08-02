@@ -1,7 +1,11 @@
 ---
-on: [push]
-
 name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop, issue-*]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -21,3 +25,14 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+
+      - name: Execute the program
+        run: |
+          mkdir output
+          time cargo run ./output/mandelbrot_1024x1024.png 1024x1024 -2.0,2.00 2.0,-2.0
+
+      - name: Upload resulting image
+        uses: actions/upload-artifact@v3
+        with:
+          name: "mandelbrot_1024x1024.png"
+          path: "./output/mandelbrot_1024x1024.png"

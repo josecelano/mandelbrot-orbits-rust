@@ -27,10 +27,12 @@ jobs:
           command: test
 
       - name: Execute the program
-        run: time cargo run ./output/mandelbrot_1024x1024.png 1024x1024 -2.0,2.00 2.0,-2.0
+        run: |
+          mkdir output
+          time cargo run ./output/mandelbrot_1024x1024.png 1024x1024 -2.0,2.00 2.0,-2.0
 
       - name: Upload resulting image
         uses: actions/upload-artifact@v3
         with:
           name: "mandelbrot_1024x1024.png"
-          path: "./mandelbrot_1024x1024.png"
+          path: "./output/mandelbrot_1024x1024.png"

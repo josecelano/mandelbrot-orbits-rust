@@ -32,10 +32,12 @@ jobs:
           components: rustfmt, clippy
 
       - name: Execute the program
-        run: cargo run "./mandelbrot_${{ github.event.inputs.pixels }}.png" "${{ github.event.inputs.pixels }}" "${{ github.event.inputs.upperleft }}" "${{ github.event.inputs.lowerright }}"
+        run: |
+          mkdir output
+          cargo run "./output/mandelbrot_${{ github.event.inputs.pixels }}.png" "${{ github.event.inputs.pixels }}" "${{ github.event.inputs.upperleft }}" "${{ github.event.inputs.lowerright }}"
 
       - name: Upload resulting image
         uses: actions/upload-artifact@v3
         with:
           name: "mandelbrot_${{ github.event.inputs.pixels }}.png"
-          path: "./mandelbrot_${{ github.event.inputs.pixels }}.png"
+          path: "./output/mandelbrot_${{ github.event.inputs.pixels }}.png"

@@ -23,6 +23,7 @@
     "mandel",
     "Mandelbook",
     "mkdir",
+    "nextest",
     "Orendorff",
     "oxsecurity",
     "preperiodic",
@@ -30,6 +31,7 @@
     "Rifkin",
     "rustc",
     "rustfmt",
+    "taiki",
     "UPPERLEFT",
     "Wikibook",
     "zstd"

@@ -32,11 +32,13 @@ Execute MegaLinter locally:
 ./bin/ml.sh
 ```
 
-Run only  a single test:
+Run tests:
 
 ```s
-cargo test test_lambda
+cargo test
 ```
+
+[More info for developers](./docs/development.md).
 
 ## Math
 

@@ -19,12 +19,13 @@ jobs:
         with:
           toolchain: nightly
           override: true
-          components: rustfmt, clippy
+          components: rustfmt, clippy, llvm-tools-preview
 
-      - name: Run tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - uses: taiki-e/install-action@nextest
+
+      - name: Run tests with coverage
+        run: cargo llvm-cov nextest
 
       - name: Execute the program
         run: |

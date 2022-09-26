@@ -6,5 +6,5 @@ edition = "2021"
 
 [dependencies]
 num = "0.4"
-image = "0.24.3"
+image = "0.24.4"
 text-colorizer = "1.0.0"

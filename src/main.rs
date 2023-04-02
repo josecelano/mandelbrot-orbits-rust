@@ -58,10 +58,7 @@ fn test_parse_pair() {
 /// Parse a pair of floating-point numbers separated by a comma as a complex
 /// number.
 fn parse_complex(s: &str) -> Option<Complex<f64>> {
-    match parse_pair(s, ',') {
-        Some((re, im)) => Some(Complex { re, im }),
-        None => None,
-    }
+    parse_pair(s, ',').map(|(re, im)| Complex { re, im })
 }
 
 #[test]
@@ -143,7 +140,7 @@ fn render(
                     let z0 = Complex { re: 0.0, im: 0.0 };
                     let period = calculate_period(z0, point);
 
-                    let color = match period {
+                    match period {
                         0 => 210, // Belong to Mandelbrot Set but we cannot calculate the period
                         1 => 0,   // Period 1: black
                         2 => 50,
@@ -157,9 +154,7 @@ fn render(
                         10 => 180,
                         11 => 190,
                         _ => 200,
-                    };
-
-                    color
+                    }
                 }
                 // Not a Mandelbrot Set point. Grayscale depending on the escape time
                 Some(count) => iteration_limit as u8 - count as u8,
@@ -181,7 +176,7 @@ fn write_image(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Result<
 
     let encoder = PngEncoder::new(output);
 
-    encoder.write_image(&pixels, bounds.0 as u32, bounds.1 as u32, ColorType::L8)?;
+    encoder.write_image(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::L8)?;
 
     Ok(())
 }
@@ -243,8 +238,7 @@ fn test_phi() {
     let expected_result = (z * z) + c; // 1+3i
     assert_eq!(
         result, expected_result,
-        "expected φ(z) = z² + c = {:?} where z = {:?}, got {:?}",
-        expected_result, z, result
+        "expected φ(z) = z² + c = {expected_result:?} where z = {z:?}, got {result:?}"
     );
 }
 
@@ -258,7 +252,7 @@ fn test_phi() {
 /// ...
 /// φ(z) = (zn-1)² + c = zn
 fn phi_n(z: Complex<f64>, c: Complex<f64>, n: usize) -> Complex<f64> {
-    let mut result = z.clone();
+    let mut result = z;
     for _iter in 1..=n {
         result = phi(result, c);
     }
@@ -276,8 +270,7 @@ fn test_phi_n() {
     let expected_result1 = (z * z) + c; // 1+3i
     assert_eq!(
         result1, expected_result1,
-        "expected φn(z) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}",
-        expected_result1, z, c, n1, result1
+        "expected φn(z) = {expected_result1:?} where (z, c, n) = ({z:?}, {c:?}, {n1:?}), got {result1:?}"
     );
 
     // For n = 2, φ2(z) = φ1(z)² + c = ???
@@ -286,8 +279,7 @@ fn test_phi_n() {
     let expected_result2 = (result1 * result1) + c; // -7+7i
     assert_eq!(
         result2, expected_result2,
-        "expected φn(z) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}",
-        expected_result2, z, c, n2, result2
+        "expected φn(z) = {expected_result2:?} where (z, c, n) = ({z:?}, {c:?}, {n2:?}), got {result2:?}"
     );
 }
 
@@ -304,8 +296,7 @@ fn test_phi_prime() {
     let expected_result = Complex { re: 2., im: 2. };
     assert_eq!(
         result, expected_result,
-        "expected φ'(z) = 2 * z = {:?} where z = {:?}, got {:?}",
-        expected_result, z, result
+        "expected φ'(z) = 2 * z = {expected_result:?} where z = {z:?}, got {result:?}"
     );
 }
 
@@ -313,7 +304,7 @@ fn lambda(z: Complex<f64>, c: Complex<f64>, n: usize) -> Complex<f64> {
     let mut result = phi_prime(z);
 
     for iter in 1..n {
-        result = result * phi_prime(phi_n(z, c, iter));
+        result *= phi_prime(phi_n(z, c, iter));
     }
 
     result
@@ -322,11 +313,8 @@ fn lambda(z: Complex<f64>, c: Complex<f64>, n: usize) -> Complex<f64> {
 #[test]
 fn test_lambda() {
     let z0 = Complex { re: 0., im: 0. };
-    let zn: Complex<f64>;
-    let c: Complex<f64>;
-
-    c = Complex { re: -2., im: 0. };
-    zn = phi_n(z0, c, 1000);
+    let c = Complex { re: -2., im: 0. };
+    let zn = phi_n(z0, c, 1000);
     assert_eq!(lambda(zn, c, 1).abs(), 4.);
 
     let z = Complex { re: 0., im: 0. };
@@ -338,8 +326,7 @@ fn test_lambda() {
     let expected_result1 = Complex { re: 0.0, im: 0.0 };
     assert_eq!(
         result1, expected_result1,
-        "expected λ(z,c,n) = {:?} where (z, c, n) = ({:?}, {:?}, {:?}), got {:?}",
-        expected_result1, z, c, n1, result1
+        "expected λ(z,c,n) = {expected_result1:?} where (z, c, n) = ({z:?}, {c:?}, {n1:?}), got {result1:?}"
     );
 }
 
@@ -347,7 +334,7 @@ fn test_lambda() {
 fn is_period_p(z: Complex<f64>, c: Complex<f64>, n: usize) -> bool {
     let max_period = 40;
 
-    let mut result = z.clone();
+    let mut result = z;
 
     for _iter in 0..max_period {
         let lambda = lambda(result, c, n);
@@ -369,20 +356,16 @@ fn test_is_period() {
 
     // Point with period of 1
     let c1 = Complex { re: 0., im: 0. };
-    assert_eq!(
+    assert!(
         is_period_p(z, c1, 1),
-        true,
-        "expected period of point {:?} to be 1",
-        c1
+        "expected period of point {c1:?} to be 1"
     );
 
     // Another point with period of 1
     let c2 = Complex { re: -0.1, im: 0.1 };
-    assert_eq!(
+    assert!(
         is_period_p(z, c2, 1),
-        true,
-        "expected period of point {:?} to be 1",
-        c2
+        "expected period of point {c2:?} to be 1"
     );
 }
 

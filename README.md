@@ -50,7 +50,7 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 ## Credits
 
-- [Jeremy Rifkin](https://github.com/jeremy-rifkin) pointed me at the solution. I have copied/pasted part of his code to detect the period.
+- [Jeremy Rifkin](https://github.com/jeremy-rifkin) pointed me to the solution. I have copied/pasted part of his code to detect the period.
 - [Jim Blandy, Programming Rust Book's Author](https://github.com/jimblandy).
 - [Jason Orendorff, Programming Rust Book's Author](https://github.com/jorendorff).
 

@@ -8,5 +8,5 @@ license-file = "LICENSE-MIT"
 
 [dependencies]
 num = "0.4"
-image = "0.24.3"
+image = "0.24.6"
 text-colorizer = "1.0.0"

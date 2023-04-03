@@ -1,6 +1,8 @@
 #![warn(rust_2018_idioms)]
 #![allow(elided_lifetimes_in_paths)]
 
+use image::Rgb;
+use image::RgbImage;
 use num::complex::ComplexFloat;
 use num::Complex;
 
@@ -136,10 +138,12 @@ fn render(
             pixels[row * bounds.0 + column] = match escape_time(point, iteration_limit) {
                 None => {
                     // Mandelbrot Set point
-                    // Calculate period
                     let z0 = Complex { re: 0.0, im: 0.0 };
+
+                    // Calculate period
                     let period = calculate_period(z0, point);
 
+                    // Colorize based on period
                     match period {
                         0 => 210, // Belong to Mandelbrot Set but we cannot calculate the period
                         1 => 0,   // Period 1: black
@@ -160,6 +164,76 @@ fn render(
                 Some(count) => iteration_limit as u8 - count as u8,
             };
         }
+    }
+}
+
+fn render_colorized(
+    img: &mut RgbImage,
+    bounds: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+) {
+    // Iterate over the coordinates and pixels of the image
+    for (x, y, pixel) in img.enumerate_pixels_mut() {
+        let column = x as usize;
+        let row = y as usize;
+
+        let point = pixel_to_point(bounds, (column, row), upper_left, lower_right);
+
+        let iteration_limit = 255;
+
+        let color = match escape_time(point, iteration_limit) {
+            None => {
+                // Mandelbrot Set point
+                let z0 = Complex { re: 0.0, im: 0.0 };
+
+                // Calculate period
+                let period = calculate_period(z0, point);
+
+                // Colorize based on period
+                match period {
+                    0 => [24, 25, 41],  // Belong to Mandelbrot Set but we cannot calculate the period
+                    1 => [61, 64, 105], // Period 1
+                    2 => [38, 63, 143],
+                    3 => [0, 127, 150],
+                    4 => [0, 160, 132],
+                    5 => [0, 144, 69],
+                    6 => [0, 184, 0],
+                    7 => [131, 206, 0],
+                    8 => [139, 235, 0],
+                    9 => [255, 249, 0],
+                    10 => [252, 200, 0],
+                    11 => [250, 120, 2],
+                    12 => [241, 56, 1],
+                    13 => [255, 15, 15],
+                    14 => [233, 0, 65],
+                    15 => [179, 0, 96],
+                    16 => [148, 1, 146],
+                    17 => [97, 0, 141],
+                    18 => [63, 3, 110],
+                    19 => [2, 2, 97],
+                    20 => [4, 46, 116],
+                    21 => [0, 66, 66],
+                    22 => [10, 80, 27],
+                    23 => [17, 83, 14],
+                    24 => [29, 95, 2],
+                    25 => [75, 79, 7],
+                    26 => [83, 62, 3],
+                    27 => [76, 45, 5],
+                    28 => [35, 16, 8],
+                    29 => [31, 15, 10],
+                    30 => [41, 29, 24],
+                    _ => [0, 0, 0],
+                }
+            }
+            // Not a Mandelbrot Set point. Grayscale depending on the escape time
+            Some(count) => {
+                let c = iteration_limit as u8 - count as u8;
+                [c, c, c]
+            }
+        };
+
+        *pixel = Rgb(color);
     }
 }
 
@@ -403,9 +477,25 @@ fn test_calculate_period() {
 fn main() {
     let args = parse_args();
 
+    // Grey scale
+
     let mut pixels = vec![0; args.bounds.0 * args.bounds.1];
 
     render(&mut pixels, args.bounds, args.upper_left, args.lower_right);
 
     write_image(&args.filepath, &pixels, args.bounds).expect("error writing PNG file");
+
+    // Colorized
+
+    // Create a new ImgBuf with width: img_x and height: img_y
+    let mut img = RgbImage::new(args.bounds.0 as u32, args.bounds.1 as u32);
+
+    render_colorized(&mut img, args.bounds, args.upper_left, args.lower_right);
+
+    // Save the image. The format is deduced from the path
+    img.save(format!(
+        "./output/colorized_mandelbrot_{}x{}.png",
+        args.bounds.0, args.bounds.1
+    ))
+    .unwrap();
 }

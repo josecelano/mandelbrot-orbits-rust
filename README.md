@@ -8,9 +8,15 @@ It generates an image of the Mandelbrot Set where each pixel color represents th
 
 More info about [Mandelbrot Set Periods](https://github.com/josecelano/mandelbrot-explorer).
 
-For now, it's using a greyscale color scheme.
+You can render it in greyscale.
 
-![./docs/images/mandelbrot_2000x2000.png](./docs/images/mandelbrot_sample.png)
+![./docs/images/mandelbrot_2000x2000.png](./docs/images/greyscale_mandelbrot_sample.png)
+
+Or the colorized version.
+
+![./docs/images/mandelbrot_2000x2000.png](./docs/images/colorized_mandelbrot_sample.png)
+
+With a different color depending on the period.
 
 ## Requirements
 

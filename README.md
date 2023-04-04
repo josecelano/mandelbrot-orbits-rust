@@ -54,11 +54,29 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 ![./docs/images/math.png](./docs/images/math.png)
 
+## Execution time
+
+```s
+16384x16384px
+4,7MB
+72m57,099s
+```
+
+```s
+32768x32768px
+15MB
+268m23,032s
+```
+
 ## Credits
 
 - [Jeremy Rifkin](https://github.com/jeremy-rifkin) pointed me to the solution. I have copied/pasted part of his code to detect the period.
 - [Jim Blandy, Programming Rust Book's Author](https://github.com/jimblandy).
 - [Jason Orendorff, Programming Rust Book's Author](https://github.com/jorendorff).
+
+## License
+
+[MIT](./LICENSE).
 
 ## Links
 

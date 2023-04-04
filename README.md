@@ -76,7 +76,7 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 ## License
 
-[MIT](./LICENSE).
+[MIT](./LICENSE-MIT).
 
 ## Links
 

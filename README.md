@@ -88,6 +88,7 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 - [Mandelbrot in C language with arbitrary precision](https://github.com/josecelano/c-mandelbrot-arbitrary-precision).
 - [Periodic points of a complex quadratic polynomial using Newton method by Adam Majewski](https://gitlab.com/adammajewski/periodic-points-of-complex-quadratic-polynomial-using-newton-method).
 - [Numerical periodicity detection of a polynomial and rational Julia set](https://github.com/adammaj1/Describe-iterated-map-).
+- [Wolfram MathWorld - Mandelbrot Set](https://mathworld.wolfram.com/MandelbrotSet.html).
 
 ### Papers
 
@@ -109,8 +110,11 @@ And I'm trying to [find](https://math.stackexchange.com/q/4502546/1082376) and w
 
 - [Mandelbrot trajectories explorer](https://rifkin.dev/projects/mandelbrot-trajectories/).
 - [Mandelbrot orbits explorer](https://mandelbrot-set-periods.online/).
+- [Javascript Mandelbrot Set Fractal Viewer](https://mandelbrot.page/).
+- [Mandelbrot Z Orbits by Stefan ­Bion](https://www.stefanbion.de/fraktal-generator/z-orbits.htm).
 
 ### Other
 
 - [Periodic points in the Mandelbrot set](https://www.ibiblio.org/e-notes/MSet/cperiod.htm).
 - [Orbit detection for the Mandelbrot set by Mark McClure](https://observablehq.com/@mcmcclur/orbit-detection-for-the-mandelbrot-set).
+- [Algebraic solution of Mandelbrot orbital boundaries by Donald D. Cross](http://cosinekitty.com/mandel_orbits_analysis.html).
